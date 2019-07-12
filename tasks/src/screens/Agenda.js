@@ -38,6 +38,20 @@ class Agenda extends Component {
             ],
         }
     }
+
+    toggleTask = id => {
+        const tasks = this.state.tasks.map(task => {
+
+            if (task.id === id) {
+                task = {...task};
+                task.doneAt = task.doneAt ? null : new Date();
+            }
+
+            return task;
+        });
+
+        this.setState({ tasks });
+    }
     
     render() {
         return (
@@ -52,7 +66,8 @@ class Agenda extends Component {
                 </ImageBackground>
                 <View style={styles.tasksContainer}>
                     <FlatList data={this.state.tasks} keyExtractor={item => `${item.id}`}
-                        renderItem={({item}) => <Task {...item} />} />
+                        renderItem={({item}) => 
+                            <Task {...item} toggleTask={this.toggleTask} />} />
                 </View>
             </View>
         )

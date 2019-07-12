@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -12,14 +12,16 @@ function Task(props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.checkContainer}> 
-                { props.doneAt ? 
-                    <View style={styles.done}>
-                        <Icon name='check' size={20} color={commonStyles.colors.secondary} />
-                    </View> : 
-                    <View style={styles.pending}></View>
-                }
-            </View>
+            <TouchableWithoutFeedback onPress={() => props.toggleTask(props.id)}>
+                <View style={styles.checkContainer}> 
+                    { props.doneAt ? 
+                        <View style={styles.done}>
+                            <Icon name='check' size={20} color={commonStyles.colors.secondary} />
+                        </View> : 
+                        <View style={styles.pending}></View>
+                    }
+                </View>
+            </TouchableWithoutFeedback>
             <View>
                 <Text style={[styles.description, descStyle]}>
                     {props.desc}
