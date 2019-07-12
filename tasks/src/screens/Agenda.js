@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, FlatList } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import todayImage from '../../assets/imgs/today.jpg';
@@ -7,6 +7,38 @@ import commonStyles from '../commonStyles';
 import Task from '../components/Task';
 
 class Agenda extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            tasks: [
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+
+                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
+                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
+            ],
+        }
+    }
+    
     render() {
         return (
             <View style={styles.container}>
@@ -19,8 +51,8 @@ class Agenda extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.tasksContainer}>
-                    <Task desc='Tarefa pendente' estimateAt={new Date()} doneAt={null} />
-                    <Task desc='Tarefa concluída' estimateAt={new Date()} doneAt={new Date()} />
+                    <FlatList data={this.state.tasks} keyExtractor={item => `${item.id}`}
+                        renderItem={({item}) => <Task {...item} />} />
                 </View>
             </View>
         )
