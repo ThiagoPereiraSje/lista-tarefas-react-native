@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TextInput, DatePickerIOS, 
-    TouchableWithoutFeedback, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Modal, TextInput, DatePickerIOS, DatePickerAndroid,
+    TouchableWithoutFeedback, TouchableOpacity, Platform, Alert } from 'react-native';
 import moment from 'moment';
 import commonStyles from '../commonStyles';
 
@@ -23,6 +23,21 @@ export class AddTask extends Component {
         this.props.onSave(data);
         this.setState({ ...InitialState });
     }
+
+    handleDateAndroidChanged = () => {
+        DatePickerAndroid.open({
+            date: this.state.date,
+        }).then(e => {
+            if (e.action !== DatePickerAndroid.dismissedAction) {
+                const momentDate = moment(this.state.date);
+                momentDate.date(e.day);
+                momentDate.month(e.month);
+                momentDate.year(e.year);
+
+                this.setState({ date: momentDate.toDate() });
+            }
+        });
+    }
     
     render() {
         return (
@@ -40,8 +55,16 @@ export class AddTask extends Component {
                         onChangeText={desc => this.setState({ desc })}
                         value={this.state.desc} />
 
-                    <DatePickerIOS mode="date" date={this.state.date} 
-                        onDateChange={date => this.setState({ date })} />
+                    { Platform.OS === 'ios' ? 
+                        <DatePickerIOS mode="date" date={this.state.date} 
+                            onDateChange={date => this.setState({ date })} /> : 
+
+                        <TouchableOpacity onPress={this.handleDateAndroidChanged}>
+                            <Text style={styles.date}>
+                                { moment(this.state.date).format('ddd, D [de] MMMM [de] YYYY') }
+                            </Text>
+                        </TouchableOpacity> 
+                    }                    
                     
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                         <TouchableOpacity onPress={this.props.onCancel}>
@@ -93,6 +116,13 @@ const styles = {
         marginRight: 30,
         color: commonStyles.colors.default,
     },
+    date: {
+        fontFamily: commonStyles.fontFamily,
+        fontSize: 20,
+        marginLeft: 10,
+        marginTop: 10,
+        textAlign: 'center',
+    }
 };
 
 export default AddTask;
