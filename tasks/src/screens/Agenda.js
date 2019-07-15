@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Platform, Alert } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import todayImage from '../../assets/imgs/today.jpg';
 import commonStyles from '../commonStyles';
 import Task from '../components/Task';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ActionButton from 'react-native-action-button';
+import AddTask from './AddTask';
 
 class Agenda extends Component {
     constructor(props) {
@@ -40,6 +42,7 @@ class Agenda extends Component {
 
             visibleTasks: [],
             showDoneTasks: true,
+            showAddTask: false,
         }
     }
 
@@ -76,10 +79,20 @@ class Agenda extends Component {
 
         this.setState({ tasks }, this.filterTasks);
     }
+
+    addTask = task => {
+        const tasks = [...this.state.tasks];
+        tasks.push({ id: Math.random(), desc: task.desc, estimateAt: task.date, doneAt: null });
+
+        this.setState({ tasks, showAddTask: false }, this.filterTasks);
+    }
     
     render() {
         return (
             <View style={styles.container}>
+                <AddTask isVisible={this.state.showAddTask} onSave={this.addTask} 
+                    onCancel={() => this.setState({ showAddTask: false }) } />
+                    
                 <ImageBackground source={todayImage} style={styles.background}>
                     <View style={styles.iconBar}>
                         <TouchableOpacity onPress={this.toggleFilter}>
@@ -99,6 +112,8 @@ class Agenda extends Component {
                         renderItem={({item}) => 
                             <Task {...item} toggleTask={this.toggleTask} />} />
                 </View>
+
+                <ActionButton buttonColor={commonStyles.colors.today} onPress={() => this.setState({ showAddTask: true }) } />
             </View>
         )
     }
