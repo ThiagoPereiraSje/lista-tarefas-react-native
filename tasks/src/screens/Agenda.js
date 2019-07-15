@@ -14,32 +14,7 @@ class Agenda extends Component {
         super(props)
     
         this.state = {
-            tasks: [
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-
-                { id: Math.random(), desc: 'Comprar curso de ReactJs', estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir o curso', estimateAt: new Date(), doneAt: null },
-            ],
-
+            tasks: [],
             visibleTasks: [],
             showDoneTasks: true,
             showAddTask: false,
@@ -86,13 +61,18 @@ class Agenda extends Component {
 
         this.setState({ tasks, showAddTask: false }, this.filterTasks);
     }
+
+    deleteTask = id => {
+        const tasks = this.state.tasks.filter(task => task.id !== id);
+        this.setState({ tasks }, this.filterTasks);
+    }
     
     render() {
         return (
             <View style={styles.container}>
                 <AddTask isVisible={this.state.showAddTask} onSave={this.addTask} 
                     onCancel={() => this.setState({ showAddTask: false }) } />
-                    
+
                 <ImageBackground source={todayImage} style={styles.background}>
                     <View style={styles.iconBar}>
                         <TouchableOpacity onPress={this.toggleFilter}>
@@ -110,7 +90,7 @@ class Agenda extends Component {
                 <View style={styles.tasksContainer}>
                     <FlatList data={this.state.visibleTasks} keyExtractor={item => `${item.id}`}
                         renderItem={({item}) => 
-                            <Task {...item} toggleTask={this.toggleTask} />} />
+                            <Task {...item} onToggleTask={this.toggleTask} onDelete={this.deleteTask} />} />
                 </View>
 
                 <ActionButton buttonColor={commonStyles.colors.today} onPress={() => this.setState({ showAddTask: true }) } />
