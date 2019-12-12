@@ -4,13 +4,14 @@ import { View, Text, Modal, TextInput, DatePickerIOS, DatePickerAndroid,
 import moment from 'moment';
 import commonStyles from '../commonStyles';
 
-const InitialState = { desc: '', date: new Date() };
-
 export class AddTask extends Component {
-
     constructor(props) {
         super(props);
-        this.state = { ...InitialState };
+        this.state = this.getInicialState();
+    }
+
+    getInicialState = () => {
+        return { desc: '', date: new Date() };
     }
 
     save = () => {
@@ -21,7 +22,6 @@ export class AddTask extends Component {
 
         const data = { ...this.state };
         this.props.onSave(data);
-        this.setState({ ...InitialState });
     }
 
     handleDateAndroidChanged = () => {
@@ -42,7 +42,8 @@ export class AddTask extends Component {
     render() {
         return (
             <Modal onRequestClose={this.props.onCancel} 
-                visible={this.props.isVisible} animationType="slide" transparent={true}>
+                visible={this.props.isVisible} animationType="slide" transparent={true}
+                onShow={() => this.setState({ ...this.getInicialState() })}>
 
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
                     <View style={styles.offset}>
