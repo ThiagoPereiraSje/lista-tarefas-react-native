@@ -12,10 +12,9 @@
     "react": "16.8.3",
     "react-native": "0.59.9",
     "react-native-action-button": "^2.8.5",
-    "react-native-gesture-handler": "^1.5.2",
     "react-native-swipeable": "^0.6.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-navigation": "^4.0.10"
+    "react-navigation": "^2.14.2"
   },
   "devDependencies": {
     "@babel/core": "7.5.4",
