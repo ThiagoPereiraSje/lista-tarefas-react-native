@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { server, showError } from '../common';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
 import AuthInput from '../components/AuthInput';
 import commonStyles from '../commonStyles';
 import backgroundImage from '../../assets/imgs/login.jpg';
@@ -31,6 +31,7 @@ export class Auth extends Component {
             })
 
             axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`;
+            AsyncStorage.setItem('userData', JSON.stringify(res.data));
             this.props.navigation.navigate('Home', res.data);
         } catch (err) {
             Alert.alert('Erro', `Falha no Login! ${err}`);
